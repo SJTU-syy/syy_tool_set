@@ -13,11 +13,6 @@ import comp.FacialTab
 import comp.AnimTab
 import comp.ToolTab
 import comp.SettingTab
-# from comp.BodyTab import BodyTab
-# from comp.FacialTab import FacialTab
-# from comp.AnimTab import AnimTab
-# from comp.ToolTab import ToolTab
-# from comp.SettingTab import SettingTab
 
 # 重新加载模块,虽然看着蠢但是有用
 import importlib

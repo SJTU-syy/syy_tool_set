@@ -53,7 +53,7 @@ class SimpleMayaWindow(QMainWindow):
     def load_file(self):
         selected_file = self.combo_box.currentText()
         if selected_file != "目录不存在":
-            file_path = os.path.join(r"F:\MAYA\proj\AdvancedSkeleton\AdvancedSkeletonFiles\fitSkeletons", selected_file)
+            file_path = os.path.join(r"/AdvancedSkeleton/AdvancedSkeletonFiles/fitSkeletons", selected_file)
             cmds.file(file_path, i=True, force=True)
             QMessageBox.information(self, "成功", f"文件 {selected_file} 已加载到当前场景中")
         else:
