@@ -2,6 +2,7 @@ import os
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QMessageBox, QFileDialog
 from maya import cmds
 
+# 设置存放文件路径
 Fpath = r"F:\MAYA\proj\AdvancedSkeleton\AdvancedSkeletonFiles\fitSkeletons"
 
 class BodyTab(QWidget):

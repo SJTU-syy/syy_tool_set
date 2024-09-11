@@ -20,6 +20,7 @@ def rename_recursive(obj, text, is_prefix=False, is_hierarchy=True):
 
     # 重命名当前对象
     newname = rename(obj, text, is_prefix)
+
     return newname
 
 
