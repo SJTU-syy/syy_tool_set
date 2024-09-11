@@ -24,7 +24,7 @@ def mirror_joint(joint_name):
 
     return mirror_joint_name
 
-#生成对象的左右对称骨骼系统
+#输入根节点，生成左右对称骨骼系统
 def create_symmetric_joint(parent, is_left=True):
     """
     输入父关节，创建对称的子对象系统
@@ -62,6 +62,22 @@ def create_symmetric_joint(parent, is_left=True):
 
 
     return parent
+
+
+def create_mirrored_joint(child_first):
+    original_name = child_first.split("|")[-1]
+
+    # 镜像关节
+    child_second = mirror_joint(child_first)
+
+    print(f'child_first: {child_first}, child_second: {child_second}')
+
+    # 重命名
+    child_first = func_nm.rename_recursive(child_first, "L")
+    # 需要有返回值
+    child_second = cmds.rename(child_second, f"{original_name}")
+    print(f'after rename child_first: {child_first}, child_second: {child_second}')
+    child_second = func_nm.rename_recursive(child_second, "R")
 
 
 

@@ -2,7 +2,10 @@ import os
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButton, QMessageBox, QFileDialog
 from maya import cmds
 
-# 设置存放文件路径
+import func.FuncRig as func_rg
+import func.FuncUtil as func_ug
+
+# 设置存放.ma文件路径
 Fpath = r"F:\MAYA\proj\AdvancedSkeleton\AdvancedSkeletonFiles\fitSkeletons"
 
 class BodyTab(QWidget):
@@ -38,6 +41,7 @@ class BodyTab(QWidget):
 
         # 设置布局
         self.setLayout(main_layout)
+
 
     # 填充下拉框
     def populate_combo_box(self):
@@ -75,97 +79,32 @@ class BodyTab(QWidget):
             cmds.file(save=True, type="mayaAscii")
             QMessageBox.information(self, "成功", f"当前场景已导出为 {file_path}")
 
-    # 创建对称骨骼系统
+    # 创建之前导入的ma骨骼编辑后的对称骨骼系统
     def create_symmetric_skeleton(self):
+        print("创建对称骨骼系统")
 
         # 寻找场景中的 FitSkeleton 对象
-        fit_skeleton = cmds.ls("FitSkeleton", type="transform")
-        if not fit_skeleton:
-            cmds.error("FitSkeleton 对象未找到")
-            return
-
-        fit_skeleton = fit_skeleton[0]
-        # 复制 FitSkeleton
-        fit_skeleton_copy = cmds.duplicate(fit_skeleton, name="FitSkeleton_copy")[0]
-
-
-        # 获取 FitSkeleton_copy 的子对象
-        children = cmds.listRelatives(fit_skeleton_copy, children=True, fullPath=True) or []
-        # 获取所有骨骼节点
-        all_joints = cmds.listRelatives(fit_skeleton_copy, allDescendents=True, type="joint", fullPath=True) or []
-
-        # 过滤出名字包含 "Scapula" 和 "Hip" 的骨骼节点
-        patterns = ["Scapula", "Hip"]
-        matched_nodes = self.find_joint_nodes(all_joints, patterns)
-
-        # 生成对称骨骼结构
-        symmetric_nodes = []
-        for node in matched_nodes:
-            # 获取节点名称
-            node_name = cmds.ls(node, long=False)[0]
-            print(f"正在生成对称骨骼 {node_name}")
-
-
-            # 创建对称节点
-            symmetric_node = cmds.duplicate(node, name=f"{node_name.split('|')[-1]}_symmetric")[0]
-
-            symmetric_nodes.append(symmetric_node)
-
-            # 获取节点的世界坐标位置
-            position = cmds.xform(node, query=True, translation=True, worldSpace=True)
-
-            # 生成对称位置并设置到对称节点上
-            symmetric_position = [-position[0], position[1], position[2]]
-            cmds.xform(symmetric_node, translation=symmetric_position, worldSpace=True)
-
-            cmds.setAttr(f"{node}.rotateOrder", 0)
-            cmds.setAttr(f"{symmetric_node}.rotateOrder", 0)
-            # 将对称节点的旋转设置为原节点的对称旋转
-            rotation = cmds.xform(node, query=True, rotation=True, worldSpace=True)
-            print(f"原节点的旋转为 {rotation}")
-            # 对于左右对称，X轴旋转是反向的，而Y和Z轴旋转不变
-            symmetric_rotation = [-rotation[0], rotation[1], rotation[2]]
-            print(f"对称节点的旋转为 {symmetric_rotation}")
-            cmds.xform(symmetric_node, rotation=symmetric_rotation, worldSpace=True)
-
-            # # 将对称节点的父节点设为原节点的父节点
-            # parent = cmds.listRelatives(node, parent=True, fullPath=True)
-            # if parent:
-            #     cmds.parent(symmetric_node, parent)
-
-        # # 创建一个名为 DeformationSystem 的空组
-        # deformation_system = cmds.group(empty=True, name="DeformationSystem")
-        # # 将新的对称骨骼系统添加到 DeformationSystem 组中
-        # cmds.parent(fit_skeleton_copy, deformation_system)
+        # fit_skeleton = cmds.ls("FitSkeleton", type="transform")
+        # if not fit_skeleton:
+        #     cmds.error("FitSkeleton 对象未找到")
+        #     return
         #
-        # # 创建一个名为 Advanced 的组
-        # advanced_group = cmds.group(empty=True, name="Advanced")
-        # # 将 DeformationSystem 和原来的 FitSkeleton 合并到 Advanced 组中
-        # cmds.parent([deformation_system, fit_skeleton], advanced_group)
+        # fit_skeleton = fit_skeleton[0]
+        # # 复制 FitSkeleton
+        # fit_skeleton_copy = cmds.duplicate(fit_skeleton, name="FitSkeleton_copy")[0]
+        #
+        #
+        # # 获取 FitSkeleton_copy 的子对象
+        # children = cmds.listRelatives(fit_skeleton_copy, children=True, fullPath=True) or []
+        # # 获取所有骨骼节点
+        # all_joints = cmds.listRelatives(fit_skeleton_copy, allDescendents=True, type="joint", fullPath=True) or []
+        #
+        # # 过滤出名字包含 "Scapula" 和 "Hip" 的骨骼节点
+        # patterns = ["Scapula", "Hip"]
+        # matched_nodes = func_ug.find_joint_nodes(all_joints, patterns)
+        # print(f"匹配的骨骼节点：{matched_nodes}")
+        #
+        # for joint in matched_nodes:
+        #     func_rg.create_mirror_joint(joint)
 
-        # print("对称骨骼系统已创建并添加到 Advanced 组中")
 
-    # 查找场景中的骨骼节点
-    def find_joint_nodes(self, joints, patterns):
-        """
-        查找场景中的骨骼节点，名称匹配指定模式的节点。
-
-        :param joints: 要查找的骨骼节点列表
-        :param patterns: 要匹配的模式列表，例如 ["Scapula", "Hip"]
-        :return: 匹配的骨骼节点列表
-        """
-        # 用于存储匹配的节点
-        matched_nodes = []
-
-        for joint in joints:
-            joint_name = joint.split('|')[-1]  # 去掉路径信息
-            # 遍历模式列表
-            for pattern in patterns:
-                # print(f"正在匹配 {joint_name} 与 {pattern}")
-                if joint_name in pattern:
-                    matched_nodes.append(joint)
-                    break  # 如果找到一个相同的名字，就跳出循环
-
-        # 返回匹配的节点列表
-
-        return matched_nodes
