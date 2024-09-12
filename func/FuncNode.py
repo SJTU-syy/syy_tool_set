@@ -23,7 +23,6 @@ def find_joint_nodes(joints, patterns):
                 break  # 如果找到一个相同的名字，就跳出循环
 
     # 返回匹配的节点列表
-
     return matched_nodes
 
 # 获取对象及其所有子对象，返回数组
@@ -57,3 +56,9 @@ def are_joints_parented(parent_joint, child_joint):
 
     # 检查父关节是否在子关节的父节点列表中
     return parent_joint in parents
+
+
+def add_custom_attribute(controller):
+    # 添加自定义属性
+    cmds.addAttr(controller, longName='customAttr', attributeType='float', min=0, max=1, defaultValue=0.5)
+    cmds.setAttr(controller + '.customAttr', edit=True, keyable=True)

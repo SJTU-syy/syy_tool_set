@@ -1,6 +1,7 @@
 from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QPushButton
 
 
+
 # Anim分页
 class AnimTab(QWidget):
     def __init__(self, parent=None):
