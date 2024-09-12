@@ -2,20 +2,25 @@ import os
 from PySide2.QtWidgets import *
 from maya import cmds
 
-import func
+
 import comp
-import route
+import func
+from rig import reload_modules
+reload_modules('comp')
+reload_modules('func')
 
 # Tool分页
 class ToolTab(QWidget):
     def __init__(self, parent=None):
         super(ToolTab, self).__init__(parent)
 
-        self.setWindowTitle("批量重命名")
-        self.setGeometry(100, 100, 300, 200)
+        self.setWindowTitle("重命名")
+        self.setGeometry(100, 100, 400, 300)  # 增加窗口大小
 
         # 创建主布局
         main_layout = QVBoxLayout()
+        main_layout.setSpacing(10)  # 设置控件间距
+        main_layout.setContentsMargins(10, 10, 10, 10)  # 设置布局边距
 
         # 创建文本输入框
         self.text_input = QLineEdit(self)
@@ -27,6 +32,11 @@ class ToolTab(QWidget):
         self.suffix_radio = QRadioButton("后缀", self)
         self.prefix_radio.setChecked(True)
 
+        # 创建继承还是不继承选择按钮
+        self.hierarchy_radio = QRadioButton("继承", self)
+        self.single_radio = QRadioButton("不继承", self)
+        self.hierarchy_radio.setChecked(True)
+
         # 创建按钮组
         self.button_group = QButtonGroup(self)
         self.button_group.addButton(self.prefix_radio)
@@ -34,10 +44,12 @@ class ToolTab(QWidget):
 
         main_layout.addWidget(self.prefix_radio)
         main_layout.addWidget(self.suffix_radio)
+        main_layout.addWidget(self.hierarchy_radio)
+        main_layout.addWidget(self.single_radio)
 
         # 创建确定按钮
         self.ok_button = QPushButton("确定", self)
-        self.ok_button.clicked.connect(self.rename_objects)
+        self.ok_button.clicked.connect(self.trigger_rename)
         main_layout.addWidget(self.ok_button)
 
         # 打印目录结构按钮
@@ -46,16 +58,14 @@ class ToolTab(QWidget):
         main_layout.addWidget(self.print_button)
 
         # 保存目录结构按钮
-        self.save_structure_button = QPushButton("保存目录结构", self)
+        self.save_structure_button = QPushButton("保存结构", self)
         self.save_structure_button.clicked.connect(func.FuncUtil.show_window_markdown_hierarchy)
         main_layout.addWidget(self.save_structure_button)
-
-        #创建
 
         # 设置布局
         self.setLayout(main_layout)
 
-    def rename_objects(self):
+    def trigger_rename(self):
         text = self.text_input.text()
         if not text:
             QMessageBox.warning(self, "错误", "请输入文本内容")
@@ -70,40 +80,17 @@ class ToolTab(QWidget):
         # 获取前缀或后缀选择
         is_prefix = self.prefix_radio.isChecked()
 
+        # 获取继承还是不继承选择
+        is_hierarchy = self.hierarchy_radio.isChecked()
+
         # 批量重命名
         for obj in selected_objects:
-            func.FuncName.renam
-            self.rename_recursive(obj, text, is_prefix)
+            func.FuncName.rename_recursive(obj, text, is_prefix, is_hierarchy)
 
         # 刷新界面并清空输入框
         self.refresh_ui()
 
         QMessageBox.information(self, "成功", "对象已重命名")
-
-    def rename_recursive(self, obj, text, is_prefix):
-        ''''''
-
-        ''''''
-
-        # 获取对象名称
-        obj_name = cmds.ls(obj, long=False)[0]
-
-        # 获取对象的所有子对象
-        children = cmds.listRelatives(obj, children=True, fullPath=True) or []
-
-        # 过滤出骨骼节点
-        joint_children = cmds.ls(children, type="joint")
-
-        # 递归重命名子对象
-        for child in joint_children:
-            self.rename_recursive(child, text, is_prefix)
-
-        # 重命名对象
-        if is_prefix:
-            new_name = f"{text}_{obj_name}"
-        else:
-            new_name = f"{obj_name}_{text}"
-        cmds.rename(obj, new_name)
 
     def refresh_ui(self):
         # 清空输入框内容
@@ -114,7 +101,3 @@ class ToolTab(QWidget):
 
         # 刷新界面
         self.update()
-
-# 创建ToolTab实例
-tool_tab = ToolTab()
-tool_tab.show()
