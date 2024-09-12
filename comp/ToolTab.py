@@ -2,6 +2,9 @@ import os
 from PySide2.QtWidgets import *
 from maya import cmds
 
+from rig import load_all_modules
+load_all_modules()
+
 # Tool分页
 class ToolTab(QWidget):
     def __init__(self, parent=None):
@@ -35,6 +38,18 @@ class ToolTab(QWidget):
         self.ok_button = QPushButton("确定", self)
         self.ok_button.clicked.connect(self.rename_objects)
         main_layout.addWidget(self.ok_button)
+
+        # 创建打印目录结构按钮
+        self.print_button = QPushButton("打印目录结构", self)
+        self.print_button.clicked.connect(func.FuncUtil.print_markdown_hierarchy)
+        main_layout.addWidget(self.print_button)
+
+        # 保存打印目录结构按钮
+        self.save_structure_button = QPushButton("保存目录结构", self)
+        self.save_structure_button.clicked.connect(func.FuncUtil.show_window_markdown_hierarchy)
+        main_layout.addWidget(self.save_structure_button)
+
+        #创建
 
         # 设置布局
         self.setLayout(main_layout)

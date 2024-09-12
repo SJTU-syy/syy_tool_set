@@ -6,7 +6,7 @@ import func.FuncRig as func_rg
 import func.FuncUtil as func_ug
 
 # 设置存放.ma文件路径
-Fpath = r"F:\MAYA\proj\AdvancedSkeleton\AdvancedSkeletonFiles\fitSkeletons"
+Fpath = r"D:\CS\syy_tool_set\AdvancedSkeleton\AdvancedSkeletonFiles\fitSkeletons"
 
 class BodyTab(QWidget):
     def __init__(self, parent=None):
@@ -61,10 +61,15 @@ class BodyTab(QWidget):
 
             # 检查场景中是否已经存在名为FitSkeleton的transform
             if cmds.objExists("FitSkeleton"):
-                reply = QMessageBox.question(self, "提示", "场景中已经存在名为FitSkeleton的transform，是否继续导入？", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-                if reply == QMessageBox.No:
+                reply = QMessageBox.question(self, "提示", "场景中已导入过骨骼模板，是否重新导入？",
+                                             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+                if reply == QMessageBox.Yes:
+                    # 删除旧的FitSkeleton
+                    cmds.delete("FitSkeleton")
+                else:
                     return
 
+            # 加载新模板
             cmds.file(file_path, i=True, force=True)
             QMessageBox.information(self, "成功", f"文件 {selected_file} 已加载到当前场景中")
         else:

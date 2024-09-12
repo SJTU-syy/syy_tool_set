@@ -190,4 +190,4 @@ def create_symmetric(parent, is_left=True):
 
 
 # mirror_joint("joint1")
-create_symmetric_joint("joint1")
+# create_symmetric_joint("joint1")
