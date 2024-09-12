@@ -5,7 +5,7 @@ from maya import cmds
 
 import comp
 import func
-from rig import reload_modules
+from rig import *
 reload_modules('comp')
 reload_modules('func')
 
@@ -49,7 +49,7 @@ class ToolTab(QWidget):
 
         # 创建确定按钮
         self.ok_button = QPushButton("确定", self)
-        self.ok_button.clicked.connect(self.trigger_rename)
+        self.ok_button.clicked.connect(self.tab_rename_recursive)
         main_layout.addWidget(self.ok_button)
 
         # 打印目录结构按钮
@@ -62,10 +62,15 @@ class ToolTab(QWidget):
         self.save_structure_button.clicked.connect(func.FuncUtil.show_window_markdown_hierarchy)
         main_layout.addWidget(self.save_structure_button)
 
+        # 弹出测试弹窗按钮
+        self.test_button = QPushButton("测试弹窗", self)
+        self.test_button.clicked.connect(self.tab_show_test_window)
+        main_layout.addWidget(self.test_button)
+
         # 设置布局
         self.setLayout(main_layout)
 
-    def trigger_rename(self):
+    def tab_rename_recursive(self):
         text = self.text_input.text()
         if not text:
             QMessageBox.warning(self, "错误", "请输入文本内容")
@@ -91,6 +96,13 @@ class ToolTab(QWidget):
         self.refresh_ui()
 
         QMessageBox.information(self, "成功", "对象已重命名")
+
+    def tab_show_test_window(self):
+        func.FuncUtil.show_test_window(self)
+
+
+
+
 
     def refresh_ui(self):
         # 清空输入框内容

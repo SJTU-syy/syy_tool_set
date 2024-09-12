@@ -26,7 +26,7 @@ def find_joint_nodes(joints, patterns):
 
     return matched_nodes
 
-# 获取对象及其所有子对象的数组
+# 获取对象及其所有子对象，返回数组
 def get_object_and_children(source_object):
     """
     获取对象及其所有子对象的数组

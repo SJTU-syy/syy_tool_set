@@ -24,7 +24,7 @@ def mirror_joint(joint_name):
 
     return mirror_joint_name
 
-#输入根节点，生成左右对称骨骼系统
+#输入根关节，根据它的一个子关节，创建左右对称的关节系统
 def create_symmetric_joint(parent, is_left=True):
     """
     输入父关节，创建对称的子对象系统
@@ -63,7 +63,7 @@ def create_symmetric_joint(parent, is_left=True):
 
     return parent
 
-
+# 输入左右子关节之一，创建对称的子关节
 def create_mirrored_joint(child_first):
     original_name = child_first.split("|")[-1]
 
@@ -84,7 +84,7 @@ def create_mirrored_joint(child_first):
 
 
 ###########################################################
-###以下为非核心方法，仅供参考
+###以下为非核心方法，基本弃用
 ###########################################################
 
 # 镜像对象及其所有子对象的世界坐标位置
@@ -109,7 +109,6 @@ def mirror_object_and_children(source_object):
         print(f"{obj} mirrored local position: {cmds.xform(obj, query=True, translation=True)}")
 
     return source_object
-
 
 # 输入坐标和骨骼名称创建对称的骨骼系统
 def create_symmetric_skeleton(skeleton_name, joint_positions):
@@ -185,9 +184,3 @@ def create_symmetric(parent, is_left=True):
 
 
     return parent
-
-
-
-
-# mirror_joint("joint1")
-# create_symmetric_joint("joint1")
