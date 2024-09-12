@@ -8,28 +8,10 @@ script_dir = os.path.dirname(os.path.abspath(inspect.getfile(current_frame)))
 if script_dir not in sys.path:
     sys.path.append(script_dir)
 
-
-import pkgutil
-import importlib
-
-# 自动重新加载整个包里面的所有模块
-def import_and_reload_modules(package_name):
-    package = sys.modules.get(package_name)
-    if package is None:
-        raise ValueError(f"Package '{package_name}' is not loaded.")
-
-    # 遍历包中的所有模块
-    for _, module_name, _ in pkgutil.iter_modules(package.__path__):
-        full_module_name = f"{package_name}.{module_name}"
-        if full_module_name in sys.modules:
-            importlib.reload(sys.modules[full_module_name])
-def load_all_modules():
-    import comp
-    import_and_reload_modules('comp')
-    import func
-    import_and_reload_modules('func')
-
-load_all_modules()
+# 最短也就缩成这三行了，老老实实导入吧
+import comp
+import func
+import route
 
 from PySide2.QtWidgets import QApplication, QMainWindow, QTabWidget
 from maya import OpenMayaUI as omui

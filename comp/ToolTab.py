@@ -2,8 +2,9 @@ import os
 from PySide2.QtWidgets import *
 from maya import cmds
 
-from rig import load_all_modules
-load_all_modules()
+import func
+import comp
+import route
 
 # Tool分页
 class ToolTab(QWidget):
@@ -39,12 +40,12 @@ class ToolTab(QWidget):
         self.ok_button.clicked.connect(self.rename_objects)
         main_layout.addWidget(self.ok_button)
 
-        # 创建打印目录结构按钮
+        # 打印目录结构按钮
         self.print_button = QPushButton("打印目录结构", self)
         self.print_button.clicked.connect(func.FuncUtil.print_markdown_hierarchy)
         main_layout.addWidget(self.print_button)
 
-        # 保存打印目录结构按钮
+        # 保存目录结构按钮
         self.save_structure_button = QPushButton("保存目录结构", self)
         self.save_structure_button.clicked.connect(func.FuncUtil.show_window_markdown_hierarchy)
         main_layout.addWidget(self.save_structure_button)
@@ -71,6 +72,7 @@ class ToolTab(QWidget):
 
         # 批量重命名
         for obj in selected_objects:
+            func.FuncName.renam
             self.rename_recursive(obj, text, is_prefix)
 
         # 刷新界面并清空输入框
