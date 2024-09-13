@@ -8,33 +8,21 @@ class SettingTab(QWidget):
         super(SettingTab, self).__init__(parent)
         layout = QVBoxLayout()
 
-        # 添加功能说明标签
-        layout.addWidget(QLabel("Setting功能说明"))
-
-        # 添加Setting按钮1
-        layout.addWidget(QPushButton("Setting按钮1"))
-
-        # 添加Setting按钮2
-        layout.addWidget(QPushButton("Setting按钮2"))
-
-        # 添加自动保存时间间隔选择框
+        # 自动保存工程
         self.auto_save_interval_label = QLabel("自动保存时间间隔 (分钟):")
         layout.addWidget(self.auto_save_interval_label)
         self.auto_save_interval_combo = QComboBox()
         self.auto_save_interval_combo.addItems(["5", "10", "15", "30", "60"])
         layout.addWidget(self.auto_save_interval_combo)
 
-        # 添加默认工程名称文本框
-        self.default_project_name_label = QLabel("默认工程名称:")
+        self.default_project_name_label = QLabel("自动保存工程名称:")
         layout.addWidget(self.default_project_name_label)
         self.default_project_name_edit = QLineEdit()
         layout.addWidget(self.default_project_name_edit)
 
-        # 添加自动保存功能勾选框
         self.auto_save_checkbox = QCheckBox("开启自动保存功能")
         layout.addWidget(self.auto_save_checkbox)
 
-        # 连接自动保存功能勾选框的信号
         self.auto_save_checkbox.stateChanged.connect(self.toggle_auto_save)
 
         self.setLayout(layout)

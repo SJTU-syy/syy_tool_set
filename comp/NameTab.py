@@ -22,22 +22,19 @@ class ToolTab(QWidget):
         main_layout.setSpacing(10)  # 设置控件间距
         main_layout.setContentsMargins(10, 10, 10, 10)  # 设置布局边距
 
-        # 创建文本输入框
+        # 重命名任意对象
         self.text_input = QLineEdit(self)
         self.text_input.setPlaceholderText("输入文本内容")
         main_layout.addWidget(self.text_input)
 
-        # 创建前缀和后缀选择按钮
         self.prefix_radio = QRadioButton("前缀", self)
         self.suffix_radio = QRadioButton("后缀", self)
         self.prefix_radio.setChecked(True)
 
-        # 创建继承还是不继承选择按钮
         self.hierarchy_radio = QRadioButton("继承", self)
         self.single_radio = QRadioButton("不继承", self)
         self.hierarchy_radio.setChecked(True)
 
-        # 创建按钮组
         self.button_group = QButtonGroup(self)
         self.button_group.addButton(self.prefix_radio)
         self.button_group.addButton(self.suffix_radio)
@@ -47,22 +44,21 @@ class ToolTab(QWidget):
         main_layout.addWidget(self.hierarchy_radio)
         main_layout.addWidget(self.single_radio)
 
-        # 创建确定按钮
         self.ok_button = QPushButton("确定", self)
         self.ok_button.clicked.connect(self.tab_rename_recursive)
         main_layout.addWidget(self.ok_button)
 
-        # 打印目录结构按钮
+        # 打印目录结构
         self.print_button = QPushButton("打印目录结构", self)
         self.print_button.clicked.connect(func.FuncUtil.print_markdown_hierarchy)
         main_layout.addWidget(self.print_button)
 
-        # 保存目录结构按钮
+        # 保存目录结构
         self.save_structure_button = QPushButton("保存结构", self)
         self.save_structure_button.clicked.connect(func.FuncUtil.show_window_markdown_hierarchy)
         main_layout.addWidget(self.save_structure_button)
 
-        # 弹出测试弹窗按钮
+        # 弹出测试弹窗
         self.test_button = QPushButton("测试弹窗", self)
         self.test_button.clicked.connect(self.tab_show_test_window)
         main_layout.addWidget(self.test_button)
@@ -99,10 +95,6 @@ class ToolTab(QWidget):
 
     def tab_show_test_window(self):
         func.FuncUtil.show_test_window(self)
-
-
-
-
 
     def refresh_ui(self):
         # 清空输入框内容

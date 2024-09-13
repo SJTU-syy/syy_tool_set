@@ -7,25 +7,11 @@
 from PySide2.QtWidgets import QApplication, QMainWindow, QTabWidget
 from maya import OpenMayaUI as omui
 from shiboken2 import wrapInstance
-
-import comp.BodyTab
-import comp.FacialTab
-import comp.AnimTab
-import comp.ToolTab
-import comp.SettingTab
-# from comp.BodyTab import BodyTab
-# from comp.FacialTab import FacialTab
-# from comp.AnimTab import AnimTab
-# from comp.ToolTab import ToolTab
-# from comp.SettingTab import SettingTab
-
-# 重新加载模块,虽然看着蠢但是有用
-import importlib
-importlib.reload(comp.BodyTab)
-importlib.reload(comp.FacialTab)
-importlib.reload(comp.AnimTab)
-importlib.reload(comp.ToolTab)
-importlib.reload(comp.SettingTab)
+from comp.BodyTab import BodyTab
+from comp.FacialTab import FacialTab
+from comp.AnimTab import AnimTab
+from comp.NameTab import ToolTab
+from comp.SettingTab import SettingTab
 
 # 获取Maya主窗口的指针
 def get_maya_main_window():
@@ -48,15 +34,15 @@ class SimpleMayaWindow(QMainWindow):
 
     # 添加分页
     def add_tabs(self):
-        self.tab_widget.addTab(comp.BodyTab.BodyTab(), "Body")
-        self.tab_widget.addTab(comp.FacialTab.FacialTab(), "Facial")
-        self.tab_widget.addTab(comp.AnimTab.AnimTab(), "Anim")
-        self.tab_widget.addTab(comp.ToolTab.ToolTab(), "Tool")
-        self.tab_widget.addTab(comp.SettingTab.SettingTab(), "Setting")
+        print("add tabs")
+        self.tab_widget.addTab(BodyTab(), "Body")
+        self.tab_widget.addTab(FacialTab(), "Facial")
+        self.tab_widget.addTab(AnimTab(), "Anim")
+        self.tab_widget.addTab(ToolTab(), "Tool")
+        self.tab_widget.addTab(SettingTab(), "Setting")
 
 # 主函数
 def main():
-
     # 创建QApplication实例
     app = QApplication.instance()
     if not app:
@@ -67,10 +53,4 @@ def main():
 
     # 创建并显示窗口
     window = SimpleMayaWindow(parent=maya_main_window)
-
     window.show()
-
-
-# 运行主函数
-if __name__ == "__main__":
-    main()

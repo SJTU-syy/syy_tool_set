@@ -8,8 +8,7 @@ script_dir = os.path.dirname(os.path.abspath(inspect.getfile(current_frame)))
 if script_dir not in sys.path:
     sys.path.append(script_dir)
 
-import comp
-import func
+
 def reload_modules(package_name):
     import pkgutil
     import importlib
@@ -26,8 +25,10 @@ def reload_modules(package_name):
         else:
             print(f"Importing module '{full_module_name}'...")
             importlib.import_module(full_module_name)
-# 最短也就缩成这三行了，老老实实导入吧
 
+# 最短也就缩成这4行了，老老实实导入吧
+import comp
+import func
 reload_modules('comp')
 reload_modules('func')
 
