@@ -3,7 +3,7 @@ from PySide2.QtWidgets import QWidget, QVBoxLayout, QLabel, QComboBox, QPushButt
 
 
 ############################################################
-# 约束操作
+# 添加约束
 ############################################################
 def create_control(name, shape='circle', size=1):
     """
@@ -122,7 +122,6 @@ def add_biped_controllers(Tab):
 # 调整场景显示
 ############################################################
 
-# 调整关节显示大小
 def set_joint_display_size(size):
     """
     调整场景中所有关节的显示大小。
@@ -177,6 +176,28 @@ def switch_ik_fk(show_ik, show_fk, show_ikfk):
         cmds.setAttr(f"{ikfk_ctrl}.visibility", show_ikfk)
 
     cmds.inViewMessage(amg=f"IK: {show_ik}, FK: {show_fk}, IKFK: {show_ikfk}", pos="midCenter", fade=True)
-
 # 示例调用：显示 IK，隐藏 FK 和 IKFK
 # switch_ik_fk(True, False, False)
+
+def toggle_joint_orientation_display(show_orient):
+    """
+    根据传入的布尔值切换场景中所有骨骼的朝向显示（局部轴向显示）。
+
+    :param show_orient: bool, True 显示骨骼朝向（局部轴向），False 隐藏骨骼朝向。
+    """
+    # 获取场景中所有的骨骼
+    joints = cmds.ls(type='joint')
+
+    if not joints:
+        cmds.warning("场景中没有找到任何骨骼。")
+        return
+
+    # 遍历每个骨骼并设置显示属性
+    for joint in joints:
+        cmds.setAttr(f"{joint}.displayLocalAxis", show_orient)
+
+    # 弹出消息提示
+    status = "显示" if show_orient else "隐藏"
+    cmds.inViewMessage(amg=f"骨骼朝向已设置为: {status}", pos="midCenter", fade=True)
+# 示例调用：显示骨骼的朝向（局部轴向）
+# toggle_joint_orientation_display(True)
