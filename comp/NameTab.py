@@ -10,9 +10,9 @@ reload_modules('comp')
 reload_modules('func')
 
 # Tool分页
-class ToolTab(QWidget):
+class NameTab(QWidget):
     def __init__(self, parent=None):
-        super(ToolTab, self).__init__(parent)
+        super(NameTab, self).__init__(parent)
 
         self.setWindowTitle("重命名")
         self.setGeometry(100, 100, 400, 300)  # 增加窗口大小
@@ -55,7 +55,7 @@ class ToolTab(QWidget):
 
         # 保存目录结构
         self.save_structure_button = QPushButton("保存结构", self)
-        self.save_structure_button.clicked.connect(func.FuncUtil.show_window_markdown_hierarchy)
+        self.save_structure_button.clicked.connect(self.tab_show_markdown_hierarchy)
         main_layout.addWidget(self.save_structure_button)
 
         # 弹出测试弹窗
@@ -65,6 +65,39 @@ class ToolTab(QWidget):
 
         # 设置布局
         self.setLayout(main_layout)
+        # 应用QSS样式
+        self.setStyleSheet("""
+                    QWidget {
+                        background-color: #2E2E2E;  /* 背景颜色 */
+                        color: #FFFFFF;  /* 字体颜色 */
+                        font-family: Arial;
+                    }
+                    QLineEdit {
+                        background-color: #444444;
+                        color: #FFFFFF;
+                        border: 1px solid #888888;
+                        padding: 5px;
+                        border-radius: 3px;  /* 圆角 */
+                    }
+                    QRadioButton {
+                        color: #FFFFFF;
+                        font-size: 14px;
+                    }
+                    QPushButton {
+                        background-color: #007ACC;  /* 按钮背景颜色 */
+                        color: #FFFFFF;  /* 按钮字体颜色 */
+                        border: none;
+                        border-radius: 5px;  /* 圆角 */
+                        padding: 10px;
+                        font-size: 14px;
+                    }
+                    QPushButton:hover {
+                        background-color: #005F99;  /* 鼠标悬停颜色 */
+                    }
+                    QPushButton:pressed {
+                        background-color: #003F66;  /* 鼠标按下颜色 */
+                    }
+                """)
 
     def tab_rename_recursive(self):
         text = self.text_input.text()
@@ -95,6 +128,9 @@ class ToolTab(QWidget):
 
     def tab_show_test_window(self):
         func.FuncUtil.show_test_window(self)
+
+    def tab_show_markdown_hierarchy(self):
+        func.FuncUtil.show_window_markdown_hierarchy(self)
 
     def refresh_ui(self):
         # 清空输入框内容

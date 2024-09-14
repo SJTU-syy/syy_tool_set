@@ -1,6 +1,7 @@
 import maya.cmds as cmds
 
 
+
 def rename_recursive(obj, text, is_prefix=False, is_hierarchy=True):
     """
     递归重命名对象及其子对象
@@ -22,7 +23,6 @@ def rename_recursive(obj, text, is_prefix=False, is_hierarchy=True):
     newname = rename(obj, text, is_prefix)
 
     return newname
-
 
 def rename(obj, text, is_prefix=False):
     """

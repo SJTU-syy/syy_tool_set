@@ -19,6 +19,8 @@ class BodyTab(QWidget):
 
         # 创建一个主布局
         main_layout = QVBoxLayout()
+        main_layout.setSpacing(10)  # 控件之间的间距
+        main_layout.setContentsMargins(15, 15, 15, 15)  # 界面边缘的边距
 
 
         # 导入骨骼模板
@@ -50,6 +52,39 @@ class BodyTab(QWidget):
 
         # 设置布局
         self.setLayout(main_layout)
+
+        # 应用QSS样式
+        self.setStyleSheet("""
+                   QWidget {
+                       background-color: #2E2E2E;  /* 背景颜色 */
+                       color: #FFFFFF;  /* 字体颜色 */
+                       font-family: Arial;
+                   }
+                   QLabel {
+                       font-size: 16px;
+                       font-weight: bold;
+                   }
+                   QComboBox {
+                       background-color: #444444;
+                       color: #FFFFFF;
+                       border: 1px solid #888888;
+                       padding: 5px;
+                   }
+                   QPushButton {
+                       background-color: #007ACC;  /* 按钮背景颜色 */
+                       color: #FFFFFF;  /* 按钮字体颜色 */
+                       border: none;
+                       border-radius: 5px;  /* 圆角 */
+                       padding: 10px;
+                       font-size: 14px;
+                   }
+                   QPushButton:hover {
+                       background-color: #005F99;  /* 鼠标悬停颜色 */
+                   }
+                   QPushButton:pressed {
+                       background-color: #003F66;  /* 鼠标按下颜色 */
+                   }
+               """)
 
 
     # 填充下拉框
@@ -127,7 +162,7 @@ class BodyTab(QWidget):
 
         # @TODO: 根据不同的骨骼类型添加更多需要镜像的节点
         patterns = ["Scapula", "Hip"]
-        matched_nodes = func.FuncNode.find_joint_nodes(all_joints, patterns)
+        matched_nodes = func.FuncNode.find_matched_nodes(all_joints, patterns)
         print(f"匹配的骨骼节点：{matched_nodes}")
 
         for joint in matched_nodes:

@@ -6,13 +6,10 @@ from PySide2.QtWidgets import *
 from maya import OpenMayaUI as omui
 from shiboken2 import wrapInstance
 
-def get_maya_main_window():
-    """
-    获取 Maya 主窗口。
-    """
-    maya_main_window_ptr = omui.MQtUtil.mainWindow()
-    return wrapInstance(int(maya_main_window_ptr), QWidget)
 
+###########################################################
+###打印信息
+###########################################################
 def print_markdown_hierarchy():
     # 获取当前选择的对象
     selected_objects = cmds.ls(selection=True)
@@ -31,7 +28,37 @@ def print_markdown_hierarchy():
     for obj in selected_objects:
         print_hierarchy(obj)
 
-def show_window_markdown_hierarchy():
+###########################################################
+###弹出窗口
+###########################################################
+
+# 测试用的基础窗口打开方法
+def show_test_window(parent=None):
+    """
+    显示测试窗口，使用指定的父窗口。
+    """
+    if parent and not isinstance(parent, QWidget):
+        raise TypeError("The parent argument must be a QWidget instance or None.")
+
+    # 创建窗口
+    window = QWidget(parent)
+    ###################这两条很重要很重要，通过函数打开界面就得这么写
+    window.setWindowFlags(Qt.Window)  # 确保窗口是独立的
+    window.setAttribute(Qt.WA_DeleteOnClose)  # 确保窗口关闭时被删除
+
+    layout = QVBoxLayout(window)
+
+    label = QLabel("Hello World!")
+    label.setAlignment(Qt.AlignCenter)  # 标签居中对齐
+    layout.addWidget(label)
+
+    window.setLayout(layout)
+    window.setWindowTitle("Test Window")
+    window.resize(500, 500)  # 设置窗口大小
+    window.show()
+
+# 打开一个窗口显示 Markdown 格式的目录结构并提供文件保存功能
+def show_window_markdown_hierarchy(parent=None):
     # 获取当前选择的对象
     selected_objects = cmds.ls(selection=True)
 
@@ -53,11 +80,8 @@ def show_window_markdown_hierarchy():
     for obj in selected_objects:
         markdown_structure += generate_hierarchy(obj)
 
-    # 获取 Maya 主窗口
-    maya_main_window = get_maya_main_window()
-
     # 创建一个简单的 GUI 界面
-    window = QWidget(maya_main_window)
+    window = QWidget(parent)
     window.setWindowFlags(Qt.Window)  # 确保窗口是独立的
     window.setAttribute(Qt.WA_DeleteOnClose)  # 确保窗口关闭时被删除
     layout = QVBoxLayout(window)
@@ -83,29 +107,6 @@ def show_window_markdown_hierarchy():
     window.setWindowTitle("Markdown Hierarchy Viewer")
     window.show()
 
-# 用于测试子窗口的打开方式，没什么必要，不如直接以maya为主界面打开
-def show_test_window(parent=None):
-    """
-    显示测试窗口，使用指定的父窗口。
-    """
-    if parent and not isinstance(parent, QWidget):
-        raise TypeError("The parent argument must be a QWidget instance or None.")
 
-    # 创建窗口
-    window = QWidget(parent)
-    ###################这两条很重要很重要，通过函数打开界面就得这么写
-    window.setWindowFlags(Qt.Window)  # 确保窗口是独立的
-    window.setAttribute(Qt.WA_DeleteOnClose)  # 确保窗口关闭时被删除
-
-    layout = QVBoxLayout(window)
-
-    label = QLabel("Hello World!")
-    label.setAlignment(Qt.AlignCenter)  # 标签居中对齐
-    layout.addWidget(label)
-
-    window.setLayout(layout)
-    window.setWindowTitle("Test Window")
-    window.resize(500, 500)  # 设置窗口大小
-    window.show()
 
 

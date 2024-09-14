@@ -179,4 +179,4 @@ def switch_ik_fk(show_ik, show_fk, show_ikfk):
     cmds.inViewMessage(amg=f"IK: {show_ik}, FK: {show_fk}, IKFK: {show_ikfk}", pos="midCenter", fade=True)
 
 # 示例调用：显示 IK，隐藏 FK 和 IKFK
-switch_ik_fk(True, False, False)
+# switch_ik_fk(True, False, False)

@@ -46,13 +46,13 @@ class SimpleMayaWindow(QMainWindow):
     def __init__(self, parent=None):
         super(SimpleMayaWindow, self).__init__(parent)
         self.setWindowTitle("多分页界面")
-        self.setGeometry(100, 100, 600, 400)
+        self.setGeometry(100, 100, 300, 400)
 
         # 创建一个QTabWidget
         self.tab_widget = QTabWidget(self)
         self.setCentralWidget(self.tab_widget)
 
-        # 添加五个分页
+        # 添加分页
         self.add_tabs()
 
     # 添加分页
@@ -60,7 +60,7 @@ class SimpleMayaWindow(QMainWindow):
         self.tab_widget.addTab(comp.BodyTab.BodyTab(), "Body")
         self.tab_widget.addTab(comp.FacialTab.FacialTab(), "Facial")
         self.tab_widget.addTab(comp.AnimTab.AnimTab(), "Anim")
-        self.tab_widget.addTab(comp.ToolTab.ToolTab(), "Tool")
+        self.tab_widget.addTab(comp.NameTab.NameTab(), "Name")
         self.tab_widget.addTab(comp.SettingTab.SettingTab(), "Setting")
 
 # 主函数

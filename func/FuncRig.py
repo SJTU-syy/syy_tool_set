@@ -1,6 +1,6 @@
 import maya.cmds as cmds
 import func.FuncName as func_nm
-import func.FuncUtil as func_ut
+import func.FuncShow as func_ut
 import importlib
 importlib.reload(func_nm)
 importlib.reload(func_ut)
@@ -8,7 +8,7 @@ importlib.reload(func_ut)
 
 
 
-# 调用maya接口镜像关节
+# 基层函数，调用maya接口镜像关节
 def mirror_joint(joint_name):
     # 确保关节存在
     if not cmds.objExists(joint_name):
@@ -81,10 +81,8 @@ def create_mirrored_joint(child_first):
 
 
 
-
-
 ###########################################################
-###以下为非核心方法，基本弃用
+###以下为历史方法，基本弃用
 ###########################################################
 
 # 镜像对象及其所有子对象的世界坐标位置
