@@ -45,8 +45,8 @@ def get_maya_main_window():
 class SimpleMayaWindow(QMainWindow):
     def __init__(self, parent=None):
         super(SimpleMayaWindow, self).__init__(parent)
-        self.setWindowTitle("多分页界面")
-        self.setGeometry(100, 100, 300, 400)
+        self.setWindowTitle("maya工具箱")
+        self.setGeometry(100, 100, 400, 400)
 
         # 创建一个QTabWidget
         self.tab_widget = QTabWidget(self)
