@@ -50,7 +50,7 @@ class NameTab(QWidget):
 
         # 打印目录结构
         self.print_button = QPushButton("打印目录结构", self)
-        self.print_button.clicked.connect(func.FuncUtil.print_markdown_hierarchy)
+        self.print_button.clicked.connect(func.FuncShow.print_markdown_hierarchy)
         main_layout.addWidget(self.print_button)
 
         # 保存目录结构
